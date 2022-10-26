@@ -29,6 +29,5 @@ korge {
 
 dependencies {
     add("commonMainApi", project(":deps"))
-    //add("commonMainApi", project(":korge-dragonbones"))
 }
 
