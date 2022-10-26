@@ -1,4 +1,4 @@
-# korge-dragonbones
+# korge-swf
 
 SWF (Adobe Animate) plugin for KorGE using kproject.
 
