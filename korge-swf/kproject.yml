@@ -1,4 +1,4 @@
-name: "korge-dragonbones"
+name: "korge-swf"
 dependencies:
     - "maven::common::com.soywiz.korlibs.korge2:korge:3.3.0"
 
