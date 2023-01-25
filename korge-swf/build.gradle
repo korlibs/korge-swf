@@ -3,5 +3,5 @@ plugins {
   id("com.soywiz.kproject")
 }
 dependencies {
-  add("commonMainApi", "com.soywiz.korlibs.korge2:korge:3.3.0")
+  add("commonMainApi", "com.soywiz.korlibs.korge2:korge")
 }

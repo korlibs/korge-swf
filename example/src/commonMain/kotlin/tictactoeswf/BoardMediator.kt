@@ -15,7 +15,7 @@ val Board.Cell.onPress by Extra.Property { Signal<Unit>() }
 
 fun Board.Cell.set(type: Chip) {
 	this.value = type
-	view["chip"].play(when (type) {
+	(view["chip"] as AnMovieClip).play(when (type) {
 		Chip.EMPTY -> "empty"
 		Chip.CIRCLE -> "circle"
 		Chip.CROSS -> "cross"

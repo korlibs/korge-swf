@@ -7,8 +7,7 @@ import com.soywiz.korge.animate.serialization.*
 import com.soywiz.korge.view.*
 import com.soywiz.korim.bitmap.*
 import com.soywiz.korim.vector.*
-import com.soywiz.korio.dynamic.mapper.*
-import com.soywiz.korio.dynamic.serialization.*
+import com.soywiz.korio.dynamic.*
 import com.soywiz.korio.file.*
 import com.soywiz.korio.serialization.yaml.*
 import kotlin.coroutines.*
@@ -56,6 +55,9 @@ suspend fun VfsFile.readSWF(
     atlasPacking: Boolean? = null
 ): AnLibrary = readSWF(AnLibrary.Context(views), defaultConfig.copy(atlasPacking = atlasPacking ?: defaultConfig.atlasPacking))
 
+val ShapeRasterizerMethodValues = ShapeRasterizerMethod.values().associateBy { it.name }
+val GraphicsRendererValues = GraphicsRenderer.values().associateBy { it.name }
+
 suspend fun VfsFile.readSWF(
     context: AnLibrary.Context,
     content: ByteArray? = null,
@@ -64,7 +66,26 @@ suspend fun VfsFile.readSWF(
 	val configFile = this.appendExtension("config")
 	val config = try {
 		if (configFile.exists()) {
-			Yaml.decodeToType(configFile.readString(), SWFExportConfig::class, Mapper)
+			val data = Yaml.decode(configFile.readString()).dyn
+			SWFExportConfig(
+				debug = data["debug"].toBoolOrNull() ?: false,
+				mipmaps = data["mipmaps"].toBoolOrNull() ?: true,
+				antialiasing = data["antialiasing"].toBoolOrNull() ?: true,
+				rasterizerMethod = ShapeRasterizerMethodValues[data["rasterizerMethod"].toStringOrNull() ?: "X4"] ?: ShapeRasterizerMethod.X4,
+				exportScale = data["exportScale"].toDoubleOrNull() ?: 1.0,
+				minShapeSide = data["minShapeSide"].toIntOrNull() ?: 64,
+				maxShapeSide = data["maxShapeSide"].toIntOrNull() ?: 512,
+				minMorphShapeSide = data["minMorphShapeSide"].toIntOrNull() ?: 16,
+				maxMorphShapeSide = data["maxMorphShapeSide"].toIntOrNull() ?: 128,
+				maxTextureSide = data["maxTextureSide"].toIntOrNull() ?: 4096,
+				exportPaths = data["exportPaths"].toBoolOrNull() ?: false,
+				adaptiveScaling = data["adaptiveScaling"].toBoolOrNull() ?: true,
+				smoothInterpolation = data["smoothInterpolation"].toBoolOrNull() ?: true,
+				atlasPacking = data["atlasPacking"].toBoolOrNull() ?: true,
+				roundDecimalPlaces = data["roundDecimalPlaces"].toIntOrNull() ?: -1,
+				generateTextures = data["generateTextures"].toBoolOrNull() ?: true,
+				graphicsRenderer = GraphicsRendererValues[data["graphicsRenderer"].toStringOrNull() ?: "SYSTEM"] ?: GraphicsRenderer.SYSTEM,
+			)
 		} else {
 			defaultConfig
 		}

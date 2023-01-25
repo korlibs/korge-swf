@@ -7,11 +7,6 @@ import com.soywiz.klock.milliseconds
 import com.soywiz.klock.min
 import com.soywiz.klock.seconds
 import com.soywiz.kmem.clamp01
-import com.soywiz.korge.debug.ObservableProperty
-import com.soywiz.korge.debug.UiListEditableValue
-import com.soywiz.korge.debug.UiRowEditableValue
-import com.soywiz.korge.debug.uiCollapsibleSection
-import com.soywiz.korge.debug.uiEditableValue
 import com.soywiz.korge.html.Html
 import com.soywiz.korge.internal.KorgeDeprecated
 import com.soywiz.korge.render.MaskStates
@@ -30,6 +25,7 @@ import com.soywiz.korge.view.ViewLeaf
 import com.soywiz.korge.view.Views
 import com.soywiz.korge.view.addUpdater
 import com.soywiz.korge.view.graphics
+import com.soywiz.korge.view.property.*
 import com.soywiz.korge.view.replaceWith
 import com.soywiz.korim.bitmap.Bitmaps
 import com.soywiz.korim.bitmap.BmpSlice
@@ -44,8 +40,6 @@ import com.soywiz.korma.geom.Matrix
 import com.soywiz.korma.geom.Point
 import com.soywiz.korma.geom.Rectangle
 import com.soywiz.korma.geom.vector.VectorPath
-import com.soywiz.korui.UiContainer
-import com.soywiz.korui.button
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
 
@@ -73,10 +67,12 @@ abstract class AnBaseShape(final override val library: AnLibrary, final override
     var graphics: Graphics? = null
     //private var graphics: Graphics? = null
 
+	@ViewProperty
     var dxDouble: Double
         get() = dx.toDouble()
         set(value) { dx = value.toFloat() }
 
+	@ViewProperty
     var dyDouble: Double
         get() = dy.toDouble()
         set(value) { dy = value.toFloat() }
@@ -193,17 +189,17 @@ abstract class AnBaseShape(final override val library: AnLibrary, final override
 
 	override fun createInstance(): View = symbol.create(library) as View
 
-    override fun buildDebugComponent(views: Views, container: UiContainer) {
-        val view = this
-        container.uiCollapsibleSection("AnBaseShape") {
-            uiEditableValue(Pair(view::dxDouble, view::dyDouble), name = "dxy", clamp = false)
-            button("Center").onClick {
-                view.dx = (-view.width / 2).toFloat()
-                view.dy = (-view.height / 2).toFloat()
-            }
-        }
-        super.buildDebugComponent(views, container)
-    }
+    //override fun buildDebugComponent(views: Views, container: UiContainer) {
+    //    val view = this
+    //    container.uiCollapsibleSection("AnBaseShape") {
+    //        uiEditableValue(Pair(view::dxDouble, view::dyDouble), name = "dxy", clamp = false)
+    //        button("Center").onClick {
+    //            view.dx = (-view.width / 2).toFloat()
+    //            view.dy = (-view.height / 2).toFloat()
+    //        }
+    //    }
+    //    super.buildDebugComponent(views, container)
+    //}
 }
 
 class AnShape(library: AnLibrary, val shapeSymbol: AnSymbolShape) : AnBaseShape(library, shapeSymbol), AnElement {
@@ -293,17 +289,19 @@ class AnTextField(override val library: AnLibrary, override val symbol: AnTextFi
 	}
 
 	var format: Html.Format by textField::format
+
+	@ViewProperty
 	override var text: String by textField::text
 	override var html: String by textField::html
 
 	override fun createInstance(): View = symbol.create(library) as View
 
-    override fun buildDebugComponent(views: Views, container: UiContainer) {
-        container.uiCollapsibleSection("AnTextField") {
-            uiEditableValue(::text)
-        }
-        super.buildDebugComponent(views, container)
-    }
+    //override fun buildDebugComponent(views: Views, container: UiContainer) {
+    //    container.uiCollapsibleSection("AnTextField") {
+    //        uiEditableValue(::text)
+    //    }
+    //    super.buildDebugComponent(views, container)
+    //}
 }
 
 //class PopMaskView(views: Views) : View(views)
@@ -521,7 +519,6 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
 	}
 
 	private val tempMatrix = Matrix()
-    private val tempLocalRenderState = MaskStates.LocalRenderState()
 	override fun renderInternal(ctx: RenderContext) {
 		if (!visible) return
 
@@ -542,7 +539,7 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
 					maskPopDepths[maskDepth] = true
 					ctx.stencilIndex++
 					usedStencil = true
-                    MaskStates.STATE_SHAPE.set(ctx, ctx.stencilIndex, tempLocalRenderState)
+                    MaskStates.STATE_SHAPE.set(ctx, ctx.stencilIndex)
 					state = 1
 					//println(" shape")
 				}
@@ -565,14 +562,14 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
 			// Mask content
 			if (maskDepth >= 0) {
 				//println(" content")
-                MaskStates.STATE_CONTENT.set(ctx, ctx.stencilIndex, tempLocalRenderState)
+                MaskStates.STATE_CONTENT.set(ctx, ctx.stencilIndex)
 				state = 2
 			}
 
 			// Pop Mask
 			if (maskPopDepths.getOrElse(depth) { false }) {
 				//println(" none")
-                MaskStates.STATE_NONE.set(ctx, referenceValue = 0, tempLocalRenderState)
+                MaskStates.STATE_NONE.set(ctx, referenceValue = 0)
 				ctx.stencilIndex--
 				state = 0
 			}
@@ -584,7 +581,7 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
 		if (usedStencil && ctx.stencilIndex <= 0) {
 			//println("ctx.stencilIndex: ${ctx.stencilIndex}")
 			ctx.stencilIndex = 0
-			ctx.ag.clear(clearColor = false, clearDepth = false, clearStencil = true, stencil = ctx.stencilIndex)
+			ctx.clear(clearColor = false, clearDepth = false, clearStencil = true, stencil = ctx.stencilIndex)
 		}
 	}
 
@@ -647,45 +644,47 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
         update()
     }
 
+	@ViewProperty
     fun play() {
         //println("stop")
         timelineRunner.running = true
         update()
     }
 
+	@ViewProperty
     fun stop() {
         //println("stop")
         timelineRunner.running = false
         update()
     }
 
-    override fun buildDebugComponent(views: Views, container: UiContainer) {
-        container.uiCollapsibleSection("SWF") {
-            addChild(UiRowEditableValue(app, "symbol", UiListEditableValue(app, { library.symbolsByName.keys.toList() }, ObservableProperty(
-                name = "symbol",
-                internalSet = { symbolName ->
-                    val views = stage?.views
-                    val newView = library.create(symbolName) as View
-                    this@AnMovieClip.replaceWith(newView)
-                    views?.debugHightlightView(newView)
-                },
-                internalGet = { symbol.name ?: "#${symbol.id}" },
-            ))))
-            addChild(UiRowEditableValue(app, "gotoAndPlay", UiListEditableValue(app, { stateNames }, ObservableProperty(
-                name = "gotoAndPlay",
-                internalSet = { frameName -> this@AnMovieClip.play(frameName) },
-                internalGet = { timelineRunner.currentStateName ?: "__start" },
-            ))))
-            addChild(UiRowEditableValue(app, "gotoAndStop", UiListEditableValue(app, { stateNames }, ObservableProperty(
-                name = "gotoAndStop",
-                internalSet = { frameName -> this@AnMovieClip.playAndStop(frameName) },
-                internalGet = { timelineRunner.currentStateName ?: "__start" },
-            ))))
-            button("start").onClick { play() }
-            button("stop").onClick { stop() }
-        }
-        super.buildDebugComponent(views, container)
-    }
+   //override fun buildDebugComponent(views: Views, container: UiContainer) {
+   //    container.uiCollapsibleSection("SWF") {
+   //        addChild(UiRowEditableValue(app, "symbol", UiListEditableValue(app, { library.symbolsByName.keys.toList() }, ObservableProperty(
+   //            name = "symbol",
+   //            internalSet = { symbolName ->
+   //                val views = stage?.views
+   //                val newView = library.create(symbolName) as View
+   //                this@AnMovieClip.replaceWith(newView)
+   //                views?.debugHightlightView(newView)
+   //            },
+   //            internalGet = { symbol.name ?: "#${symbol.id}" },
+   //        ))))
+   //        addChild(UiRowEditableValue(app, "gotoAndPlay", UiListEditableValue(app, { stateNames }, ObservableProperty(
+   //            name = "gotoAndPlay",
+   //            internalSet = { frameName -> this@AnMovieClip.play(frameName) },
+   //            internalGet = { timelineRunner.currentStateName ?: "__start" },
+   //        ))))
+   //        addChild(UiRowEditableValue(app, "gotoAndStop", UiListEditableValue(app, { stateNames }, ObservableProperty(
+   //            name = "gotoAndStop",
+   //            internalSet = { frameName -> this@AnMovieClip.playAndStop(frameName) },
+   //            internalGet = { timelineRunner.currentStateName ?: "__start" },
+   //        ))))
+   //        button("start").onClick { play() }
+   //        button("stop").onClick { stop() }
+   //    }
+   //    super.buildDebugComponent(views, container)
+   //}
 
     override var ratio: Double
         get() = timelineRunner.ratio
