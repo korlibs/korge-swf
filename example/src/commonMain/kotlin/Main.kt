@@ -1,5 +1,5 @@
-import com.soywiz.korge.*
-import com.soywiz.korge.scene.*
+import korlibs.korge.*
+import korlibs.korge.scene.*
 import samples.tictactoeswf.*
 
 suspend fun main() = Korge {

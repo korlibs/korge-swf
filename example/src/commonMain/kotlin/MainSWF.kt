@@ -1,34 +1,15 @@
-import com.soywiz.kds.iterators.fastForEach
-import com.soywiz.korev.DropFileEvent
-import com.soywiz.korge.animate.AnBaseShape
-import com.soywiz.korge.ext.swf.SWFExportConfig
-import com.soywiz.korge.ext.swf.readSWF
-import com.soywiz.korge.scene.Scene
-import com.soywiz.korge.ui.UI_DEFAULT_WIDTH
-import com.soywiz.korge.ui.clicked
-import com.soywiz.korge.ui.uiButton
-import com.soywiz.korge.ui.uiComboBox
-import com.soywiz.korge.ui.uiHorizontalStack
-import com.soywiz.korge.view.GraphicsRenderer
-import com.soywiz.korge.view.SContainer
-import com.soywiz.korge.view.container
-import com.soywiz.korge.view.descendantsOfType
-import com.soywiz.korge.view.position
-import com.soywiz.korge.view.scale
-import com.soywiz.korge.view.xy
-import com.soywiz.korgw.FileFilter
-import com.soywiz.korgw.onDragAndDropFileEvent
-import com.soywiz.korgw.openFileDialog
-import com.soywiz.korim.vector.ShapeRasterizerMethod
-import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korio.file.Vfs
-import com.soywiz.korio.file.VfsFile
-import com.soywiz.korio.file.std.localVfs
-import com.soywiz.korio.file.std.resourcesVfs
-import com.soywiz.korma.geom.Anchor
-import com.soywiz.korma.geom.Rectangle
-import com.soywiz.korma.geom.ScaleMode
-import com.soywiz.korma.geom.applyScaleMode
+import korlibs.event.*
+import korlibs.image.vector.*
+import korlibs.io.async.*
+import korlibs.io.file.*
+import korlibs.io.file.std.*
+import korlibs.korge.ext.swf.*
+import korlibs.korge.input.*
+import korlibs.korge.scene.*
+import korlibs.korge.ui.*
+import korlibs.korge.view.*
+import korlibs.math.geom.*
+import korlibs.render.*
 
 class MainSWF : Scene() {
     //val rastMethod = ShapeRasterizerMethod.X4 // Fails on native
@@ -64,7 +45,7 @@ class MainSWF : Scene() {
                     val realBounds = Rectangle(0, 0, swf.width, swf.height).applyScaleMode(this@sceneMain.getLocalBounds(), ScaleMode.FIT, Anchor.CENTER)
                     //timeline.xy(realBounds.x, realBounds.y).scale(realBounds.width / swf.width, realBounds.height / swf.height)
                     //println("realBounds=$realBounds")
-                    timeline.xy(realBounds.x, realBounds.y).setSizeScaled(realBounds.width, realBounds.height)
+                    timeline.xy(realBounds.x, realBounds.y).sizeScaled(Size(realBounds.width, realBounds.height))
                     extraSwfContainer.uiHorizontalStack {
                         uiComboBox(items = timeline.stateNames).also {
                             it.onSelectionUpdate {
@@ -86,7 +67,7 @@ class MainSWF : Scene() {
             }
         }
 
-        uiButton("Load or drag SWF...", width = UI_DEFAULT_WIDTH * 2)
+        uiButton("Load or drag SWF...", size = UIButton.DEFAULT_SIZE.copy(width = UIButton.DEFAULT_SIZE.width * 2))
             .xy(510, 0)
             .clicked {
                 launchImmediately {
@@ -95,10 +76,10 @@ class MainSWF : Scene() {
                 }
             }
 
-        this.addOnEvent<DropFileEvent> {
+        onDropFile {
             println("DropFileEvent: $it")
             if (it.type == DropFileEvent.Type.DROP) {
-                val files = it.files ?: return@addOnEvent
+                val files = it.files ?: return@onDropFile
                 loadSwf(files)
             }
         }

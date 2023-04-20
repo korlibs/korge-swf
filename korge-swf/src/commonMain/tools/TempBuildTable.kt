@@ -1,4 +1,4 @@
-package com.soywiz.korfl.abc
+package korlibs.korfl.abc
 
 fun main(args: Array<String>) {
 	val rexenums = Regex("public static const (\\w+):uint = (0x\\w+);")
