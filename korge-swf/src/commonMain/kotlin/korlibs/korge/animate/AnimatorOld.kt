@@ -1,5 +1,6 @@
 package korlibs.korge.animate
 
+/*
 import korlibs.datastructure.Deque
 import korlibs.datastructure.iterators.fastForEach
 import korlibs.io.async.launchImmediately
@@ -308,3 +309,4 @@ suspend fun View.animateParallel(
     looped: Boolean = false,
     block: @AnimatorDslMarker Animator.() -> Unit = {}
 ): Animator = animate(time, speed, easing, completeOnCancel, Animator.NodeKind.Parallel, looped, block)
+*/

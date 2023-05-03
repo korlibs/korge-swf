@@ -26,6 +26,8 @@ class MainSWF : Scene() {
     )
 
     override suspend fun SContainer.sceneMain() {
+        //uiButton("HELLO")
+
         val extraSwfContainer = container {
             this += resourcesVfs["morph.swf"].readSWF(views, config, false).createMainTimeLine()
             this += resourcesVfs["dog.swf"].readSWF(views, config, false).createMainTimeLine()
@@ -67,7 +69,8 @@ class MainSWF : Scene() {
             }
         }
 
-        uiButton("Load or drag SWF...", size = UIButton.DEFAULT_SIZE.copy(width = UIButton.DEFAULT_SIZE.width * 2))
+        //uiButton("Load or drag SWF...", size = UIButton.DEFAULT_SIZE.copy(width = UIButton.DEFAULT_SIZE.width * 2))
+        this += UIButton(text = "Load or drag SWF...")
             .xy(510, 0)
             .clicked {
                 launchImmediately {

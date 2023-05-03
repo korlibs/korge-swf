@@ -1,8 +1,12 @@
 buildscript { repositories { mavenLocal(); mavenCentral(); google(); gradlePluginPortal() } }
 plugins {
-  id("com.soywiz.kproject") version "0.1.2"
+  id("com.soywiz.kproject") version "0.1.3"
 }
 dependencies {
   add("commonMainApi", "com.soywiz.korlibs.korge2:korge")
   add("commonMainApi", project(":korge-text2"))
+}
+File extraGradle = file("build.extra.gradle")
+if (extraGradle.exists()) {
+    apply from: extraGradle
 }
