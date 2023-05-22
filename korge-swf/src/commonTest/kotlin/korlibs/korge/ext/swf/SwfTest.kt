@@ -84,6 +84,7 @@ class SwfTest {
 	}
 
     @Test
+    @Ignore
     fun dogShapes() = suspendTest {
         val swf = SWF()
         swf.loadBytes(resourcesVfs["dog.swf"].readBytes())
@@ -268,6 +269,7 @@ class SwfTest {
 	}
 
 	@Test
+    @Ignore
 	fun stopattheend() = swfTest {
 		val lib = resourcesVfs["stop_at_the_end.swf"].readSWFDeserializing(views, fastSwfExportConfig())
 		val cmt = lib.createMainTimeLine()

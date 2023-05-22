@@ -1,6 +1,0 @@
-dependencies:
-  #- git::korge-swf::korlibs/korge-swf::/korge-swf::f7af9d42e39ce7914f7f1e03d7ca404c8f4a50d8
-  #- git::korge-swf::korlibs/korge-swf::/korge-swf::v0.0.1
-  - ../korge-swf
-
-
