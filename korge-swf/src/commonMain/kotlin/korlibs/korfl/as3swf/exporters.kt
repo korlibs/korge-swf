@@ -5,6 +5,7 @@ import korlibs.datastructure.IntArrayList
 import korlibs.io.lang.format
 import korlibs.math.geom.*
 import korlibs.math.geom.vector.LineScaleMode
+import korlibs.util.*
 
 open class ShapeExporter {
 	open fun beginShape() = Unit

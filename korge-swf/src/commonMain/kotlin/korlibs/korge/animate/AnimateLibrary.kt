@@ -2,50 +2,29 @@
 
 package korlibs.korge.animate
 
-import korlibs.datastructure.Extra
-import korlibs.datastructure.extraCache
-import korlibs.datastructure.iterators.fastForEach
-import korlibs.time.TimeSpan
-import korlibs.time.milliseconds
-import korlibs.audio.sound.AudioData
-import korlibs.audio.sound.Sound
-import korlibs.audio.sound.nativeSoundProvider
-import korlibs.korge.animate.serialization.AniFile
-import korlibs.korge.animate.serialization.readAni
-import korlibs.korge.internal.KorgeInternal
-import korlibs.korge.render.TextureWithBitmapSlice
+import korlibs.audio.sound.*
+import korlibs.datastructure.*
+import korlibs.datastructure.iterators.*
+import korlibs.image.bitmap.*
+import korlibs.image.color.*
+import korlibs.image.format.*
+import korlibs.image.vector.*
+import korlibs.io.lang.*
+import korlibs.io.util.*
+import korlibs.korge.animate.serialization.*
+import korlibs.korge.internal.*
+import korlibs.korge.render.*
+import korlibs.korge.view.*
 import korlibs.korge.view.BlendMode
-import korlibs.korge.view.GraphicsRenderer
-import korlibs.korge.view.KorgeFileLoader
-import korlibs.korge.view.KorgeFileLoaderTester
-import korlibs.korge.view.View
-import korlibs.korge.view.Views
-import korlibs.korge.view.filter.filter
-import korlibs.korge.view.filter.Filter
-import korlibs.image.bitmap.Bitmap
-import korlibs.image.bitmap.BmpSlice
-import korlibs.image.color.ColorTransform
-import korlibs.image.color.Colors
-import korlibs.image.color.RGBA
-import korlibs.image.format.ImageFormat
-import korlibs.image.format.RegisteredImageFormats
-import korlibs.image.vector.Shape
-import korlibs.io.lang.invalidOp
-import korlibs.io.lang.printStackTrace
-import korlibs.io.util.AsyncOnce
-import korlibs.korge.html.Html
-import korlibs.math.geom.MMatrix
-import korlibs.math.geom.MRectangle
-import korlibs.math.geom.Matrix
-import korlibs.math.geom.Rectangle
-import korlibs.math.geom.vector.VectorPath
-import korlibs.math.interpolation.Ratio
-import korlibs.math.interpolation.interpolate
-import korlibs.math.interpolation.toRatio
-import kotlinx.coroutines.CancellationException
+import korlibs.korge.view.filter.*
+import korlibs.korge.view.textOld.*
+import korlibs.math.geom.*
+import korlibs.math.geom.vector.*
+import korlibs.math.interpolation.*
+import korlibs.time.*
+import kotlinx.coroutines.*
 import kotlin.collections.set
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.coroutines.*
 
 open class AnSymbol(
 	val id: Int = -1,
@@ -146,7 +125,7 @@ data class AnSymbolTimelineFrame(
 		fun setToViewInterpolated(view: View, l: AnSymbolTimelineFrame, r: AnSymbolTimelineFrame, ratio: Ratio) {
 			view.setMatrixInterpolated(ratio.toDouble(), l.transform.immutable, r.transform.immutable)
 			view.colorTransform = view.colorTransform.setToInterpolated(ratio, l.colorTransform, r.colorTransform)
-			view.ratio = ratio.interpolate(l.ratio, r.ratio).toFloat()
+			view.ratio = ratio.interpolate(l.ratio, r.ratio)
 			view.name = l.name
 			view.blendMode = l.blendMode
             view.filter = l.filter
@@ -154,7 +133,7 @@ data class AnSymbolTimelineFrame(
 	}
 
 	fun setToView(view: View) {
-		view.ratio = ratio.toFloat()
+		view.ratio = ratio
 		view.setMatrix(transform.immutable)
 		view.name = name
 		view.colorTransform = colorTransform

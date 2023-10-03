@@ -1,10 +1,9 @@
 package korlibs.korfl.as3swf
 
-import korlibs.datastructure.Extra
+import korlibs.datastructure.*
 import korlibs.io.lang.*
 import korlibs.io.stream.*
-import korlibs.io.util.*
-import korlibs.memory.Half
+import korlibs.number.*
 import kotlin.collections.set
 import kotlin.math.*
 

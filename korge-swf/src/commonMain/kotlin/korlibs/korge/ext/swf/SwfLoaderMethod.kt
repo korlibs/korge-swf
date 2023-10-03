@@ -20,7 +20,7 @@ import korlibs.io.serialization.json.*
 import korlibs.io.stream.*
 import korlibs.math.geom.*
 import korlibs.math.geom.vector.VectorPath
-import korlibs.crypto.encoding.hexLower
+import korlibs.encoding.hexLower
 import kotlinx.coroutines.*
 import kotlin.collections.component1
 import kotlin.collections.component2

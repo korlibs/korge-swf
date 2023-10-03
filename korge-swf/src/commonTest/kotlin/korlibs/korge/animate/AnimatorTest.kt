@@ -1,17 +1,14 @@
 package korlibs.korge.animate
 
-import korlibs.time.milliseconds
-import korlibs.time.seconds
-import korlibs.memory.toIntRound
-import korlibs.korge.tests.ViewsForTesting
+import korlibs.image.color.*
+import korlibs.korge.tests.*
 import korlibs.korge.tween.*
-import korlibs.korge.view.solidRect
-import korlibs.image.color.Colors
-import korlibs.image.color.interpolate
+import korlibs.korge.view.*
+import korlibs.math.*
 import korlibs.math.geom.*
 import korlibs.math.interpolation.*
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import korlibs.time.*
+import kotlin.test.*
 
 class AnimatorTest : ViewsForTesting() {
     @Test

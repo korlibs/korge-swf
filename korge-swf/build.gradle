@@ -1,12 +1,16 @@
-buildscript { repositories { mavenLocal(); mavenCentral(); google(); gradlePluginPortal() } }
+buildscript {
+    repositories {
+        mavenLocal(); mavenCentral(); google(); gradlePluginPortal()
+        maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev") }
+        maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental") }
+    }
+}
 plugins {
-  id("com.soywiz.kproject") version "0.3.0"
+  id("com.soywiz.kproject")
 }
 dependencies {
   add("commonMainApi", "com.soywiz.korlibs.korge2:korge")
-  add("commonMainApi", project(":korge-text2"))
 }
-File extraGradle = file("build.extra.gradle")
-if (extraGradle.exists()) {
-    apply from: extraGradle
+[file("build.extra.gradle"), file("build.extra.gradle.kts")].each { extraGradle ->
+  if (extraGradle.exists()) apply from: extraGradle
 }

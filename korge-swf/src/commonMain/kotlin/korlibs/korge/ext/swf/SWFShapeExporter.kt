@@ -1,10 +1,8 @@
 package korlibs.korge.ext.swf
 
 import korlibs.datastructure.*
-import korlibs.memory.clamp
 import korlibs.memory.extract8
 import korlibs.memory.insert8
-import korlibs.memory.toIntCeil
 import korlibs.korfl.as3swf.*
 import korlibs.korge.view.GraphicsRenderer
 import korlibs.image.bitmap.*
@@ -248,15 +246,15 @@ open class SWFBaseShapeExporter(
             strokeStyle,
             Matrix.IDENTITY,
             StrokeInfo(
-                lineWidth.toFloat(),
+                lineWidth,
                 true,
                 lineScaleMode,
                 lineCap,
                 lineCap,
                 LineJoin.MITER,
-                miterLimit.toFloat(),
+                miterLimit,
                 lineDash,
-                lineDashOffset.toFloat()
+                lineDashOffset
             )
         )
         apath = VectorPath()
@@ -274,7 +272,7 @@ open class SWFBaseShapeExporter(
     private var lineScaleMode = LineScaleMode.NORMAL
     private var miterLimit = 1.0
     private var lineCap: LineCap = LineCap.ROUND
-    private var lineDash: IFloatArrayList? = null
+    private var lineDash: DoubleList? = null
     private var lineDashOffset: Double = 0.0
     private var strokeStyle: Paint = ColorPaint(Colors.BLACK)
 
