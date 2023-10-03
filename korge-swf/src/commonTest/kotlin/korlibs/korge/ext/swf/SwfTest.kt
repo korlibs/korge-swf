@@ -26,6 +26,7 @@ import korlibs.korge.animate.*
 import korlibs.math.geom.RectangleInt
 import korlibs.math.geom.vector.VectorPath
 import korlibs.memory.*
+import korlibs.platform.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlin.coroutines.CoroutineContext
@@ -276,11 +277,11 @@ class SwfTest {
 		assertEquals(listOf("box"), cmt.allDescendantNames)
 		for (n in 0 until 10) cmt.update(10)
 		assertEquals(listOf("circle"), cmt.allDescendantNames)
-		cmt["circle"]?.x = 900f
-		assertEquals(900f, cmt["circle"]?.x)
+		cmt["circle"]?.x = 900.0
+		assertEquals(900.0, cmt["circle"]?.x)
 		cmt.update(10)
 		cmt.update(40)
-		assertEquals(900f, cmt["circle"]?.x)
+		assertEquals(900.0, cmt["circle"]?.x)
 		assertEquals(
 			RectangleInt(x=899, y=96, width=161, height=161),
 			cmt["circle"]!!.getGlobalBounds().toInt()
@@ -324,8 +325,7 @@ class SwfTest {
 			val result = mtl.playAndWaitEvent("box", "box_back")
 			println("--------------")
 			assertEquals("box_back", result)
-			//assertEquals(0.5, mtl["box"]!!.alpha, 0.001)
-			assertEquals(0.5f, mtl["box"]!!.alpha, 0.01f)
+			assertEquals(0.5, mtl["box"]!!.alpha, 0.01)
 			println("b")
 		}
 		for (n in 0 until 200) {

@@ -1,14 +1,12 @@
 package korlibs.korge.animate.serialization
 
-import korlibs.datastructure.DoubleArrayList
-import korlibs.datastructure.IntArrayList
 import korlibs.datastructure.iterators.fastForEach
 import korlibs.time.microseconds
 import korlibs.time.milliseconds
 import korlibs.memory.extract
 import korlibs.audio.sound.Sound
 import korlibs.audio.sound.readSound
-import korlibs.datastructure.FloatArrayList
+import korlibs.datastructure.*
 import korlibs.datastructure.floatArrayListOf
 import korlibs.korge.animate.AnEventAction
 import korlibs.korge.animate.AnLibrary
@@ -169,12 +167,12 @@ object AnLibraryDeserializer {
 						val cmds = IntArray(readU_VL())
 						for (n in 0 until cmds.size) cmds[n] = readU8()
 
-						val data = FloatArray(readU_VL())
-						for (n in 0 until data.size) data[n] = readF32LE()
+						val data = DoubleArray(readU_VL())
+						for (n in 0 until data.size) data[n] = readF32LE().toDouble()
 
 						//val cmds = (0 until readU_VL()).map { readU8() }.toIntArray()
 						//val data = (0 until readU_VL()).map { readF32LE().toDouble() }.toDoubleArray()
-						VectorPath(IntArrayList(*cmds), floatArrayListOf(*data))
+						VectorPath(IntArrayList(*cmds), doubleArrayListOf(*data))
 					}
 					else -> null
 				}

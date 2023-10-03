@@ -1,7 +1,6 @@
 package korlibs.korge.animate.serialization
 
 import korlibs.datastructure.iterators.fastForEach
-import korlibs.memory.clamp
 import korlibs.memory.insert
 import korlibs.korge.animate.AnEventAction
 import korlibs.korge.animate.AnLibrary
@@ -32,7 +31,9 @@ import korlibs.io.stream.writeS_VL
 import korlibs.io.stream.writeStringVL
 import korlibs.io.stream.writeStringz
 import korlibs.io.stream.writeU_VL
+import korlibs.math.*
 import korlibs.math.geom.*
+import korlibs.time.*
 
 suspend fun AnLibrary.writeTo(file: VfsFile, config: AnLibrarySerializer.Config = AnLibrarySerializer.Config()) {
 	//println("writeTo")

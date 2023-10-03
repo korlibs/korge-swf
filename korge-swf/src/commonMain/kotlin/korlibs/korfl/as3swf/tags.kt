@@ -11,6 +11,8 @@ import korlibs.memory.*
 import korlibs.korfl.*
 import korlibs.io.lang.*
 import korlibs.io.stream.*
+import korlibs.math.*
+import korlibs.util.*
 import kotlin.collections.set
 
 interface ITag {

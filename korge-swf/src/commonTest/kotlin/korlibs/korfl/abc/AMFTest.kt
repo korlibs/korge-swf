@@ -1,8 +1,8 @@
 package korlibs.korfl.abc
 
-import korlibs.korfl.*
+import korlibs.encoding.*
 import korlibs.io.stream.*
-import korlibs.crypto.encoding.*
+import korlibs.korfl.*
 import kotlin.test.*
 
 class AMFTest {

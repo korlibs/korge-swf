@@ -2,8 +2,8 @@ package korlibs.korge.animate
 
 import korlibs.datastructure.IntArrayList
 import korlibs.datastructure.binarySearch
-import korlibs.time.TimeSpan
-import korlibs.memory.clamp
+import korlibs.math.*
+import korlibs.time.*
 import kotlin.math.max
 import kotlin.math.min
 

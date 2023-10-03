@@ -3,12 +3,6 @@ package korlibs.korge.animate
 import korlibs.datastructure.*
 import korlibs.datastructure.iterators.fastForEach
 import korlibs.graphics.shader.*
-import korlibs.time.TimeSpan
-import korlibs.time.microseconds
-import korlibs.time.milliseconds
-import korlibs.time.min
-import korlibs.time.seconds
-import korlibs.memory.clamp01
 import korlibs.korge.view.property.*
 import korlibs.image.bitmap.Bitmaps
 import korlibs.image.bitmap.BmpSlice
@@ -20,12 +14,16 @@ import korlibs.io.async.launchImmediately
 import korlibs.io.lang.Closeable
 import korlibs.io.util.Once
 import korlibs.korge.animate.internal.*
-import korlibs.korge.html.*
 import korlibs.korge.render.*
 import korlibs.korge.view.*
+import korlibs.korge.view.IHtml
+import korlibs.korge.view.IText
+import korlibs.korge.view.textOld.*
+import korlibs.math.*
 import korlibs.math.geom.*
 import korlibs.math.geom.vector.VectorPath
 import korlibs.math.interpolation.*
+import korlibs.time.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
 
@@ -232,7 +230,7 @@ class AnMorphShape(library: AnLibrary, val morphSymbol: AnSymbolMorphShape) : An
 		smoothing = true
 	}
 
-	override var ratio: Float = 0f
+	override var ratio: Double = 0.0
 		set(value) {
 			field = value
 			updatedRatio()
@@ -341,7 +339,7 @@ class TimelineRunner(val view: AnMovieClip, val symbol: AnSymbolMovieClip) {
 	fun gotoAndPlay(name: String, time: TimeSpan = 0.milliseconds) = gotoAndRunning(true, name, time)
 	fun gotoAndStop(name: String, time: TimeSpan = 0.milliseconds) = gotoAndRunning(false, name, time)
 
-    var ratio: Float
+    var ratio: Double
         get() = (currentTime / currentStateTotalTime)
         set(value) {
             currentTime = (currentStateTotalTime * value.clamp01())
@@ -671,7 +669,7 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
    //    super.buildDebugComponent(views, container)
    //}
 
-    override var ratio: Float
+    override var ratio: Double
         get() = timelineRunner.ratio
         set(value) {
             //println("set ratio: $value")

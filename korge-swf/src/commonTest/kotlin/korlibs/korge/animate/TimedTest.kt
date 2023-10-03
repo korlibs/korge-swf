@@ -1,7 +1,7 @@
 package korlibs.korge.animate
 
+import korlibs.number.*
 import korlibs.time.microseconds
-import korlibs.io.util.niceStr
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
