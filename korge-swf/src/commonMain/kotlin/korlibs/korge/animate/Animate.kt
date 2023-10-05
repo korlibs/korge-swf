@@ -230,7 +230,8 @@ class AnMorphShape(library: AnLibrary, val morphSymbol: AnSymbolMorphShape) : An
 		smoothing = true
 	}
 
-	var ratio: Ratio = Ratio.ZERO
+    @ViewProperty
+    var ratio: Ratio = Ratio.ZERO
 		set(value) {
 			field = value
 			updatedRatio()
