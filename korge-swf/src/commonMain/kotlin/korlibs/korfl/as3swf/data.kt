@@ -1,19 +1,14 @@
 package korlibs.korfl.as3swf
 
-import korlibs.datastructure.DoubleArrayList
-import korlibs.datastructure.FastArrayList
-import korlibs.datastructure.IntArrayList
-import korlibs.datastructure.IntMap
-import korlibs.datastructure.fastArrayListOf
-import korlibs.image.color.Colors
-import korlibs.image.vector.*
-import korlibs.io.lang.*
-import korlibs.korge.ext.swf.encodeSWFColor
+import korlibs.datastructure.*
+import korlibs.image.color.*
+import korlibs.korge.ext.swf.*
 import korlibs.math.geom.*
-import korlibs.math.geom.vector.LineScaleMode
+import korlibs.math.geom.vector.*
+import korlibs.util.*
 import kotlin.collections.set
 import kotlin.math.*
-import kotlin.native.concurrent.ThreadLocal
+import kotlin.native.concurrent.*
 
 @ThreadLocal
 private val SWFActionValue_ba = FlashByteArray().also {

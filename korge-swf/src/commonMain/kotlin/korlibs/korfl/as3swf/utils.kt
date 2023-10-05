@@ -7,6 +7,7 @@ import korlibs.io.compression.deflate.*
 import korlibs.io.compression.lzma.*
 import korlibs.io.lang.*
 import korlibs.io.stream.*
+import korlibs.util.*
 import kotlin.math.*
 
 object ColorUtils {
