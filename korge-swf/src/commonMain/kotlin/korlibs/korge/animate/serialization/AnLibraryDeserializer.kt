@@ -44,6 +44,7 @@ import korlibs.io.stream.openFastStream
 import korlibs.io.stream.readAll
 import korlibs.math.geom.*
 import korlibs.math.geom.vector.VectorPath
+import korlibs.math.interpolation.*
 import kotlin.coroutines.coroutineContext
 
 suspend fun VfsFile.readAnimation(views: Views): AnLibrary {
@@ -293,7 +294,7 @@ object AnLibraryDeserializer {
 				var lastColorTransform = ColorTransform()
 				var lastMatrix = MMatrix()
 				var lastClipDepth = -1
-				var lastRatio = 0.0
+				var lastRatio = Ratio.ZERO
 				var lastFrameTime = 0.milliseconds
 				var lastBlendMode = BlendMode.INHERIT
 				for (frameIndex in 0 until readU_VL()) {
@@ -342,7 +343,7 @@ object AnLibraryDeserializer {
 						if (matrixFlags.extract(5)) lm.ty = readS_VL().toDouble() / 20.0
 						lastMatrix = lm
 					}
-					if (hasRatio) lastRatio = readU8().toDouble() / 255.0
+					if (hasRatio) lastRatio = Ratio(readU8().toDouble(), 255.0)
 					if (hasBlendMode) {
 						lastBlendMode = BlendMode.BY_ORDINAL[readU8()] ?: BlendMode.INHERIT
 					}

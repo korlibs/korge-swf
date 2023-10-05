@@ -21,6 +21,7 @@ import korlibs.io.stream.*
 import korlibs.math.geom.*
 import korlibs.math.geom.vector.VectorPath
 import korlibs.encoding.hexLower
+import korlibs.math.interpolation.*
 import kotlinx.coroutines.*
 import kotlin.collections.component1
 import kotlin.collections.component2
@@ -587,14 +588,14 @@ class SwfLoaderMethod(val context: AnLibrary.Context, val config: SWFExportConfi
             var clipDepth: Int = -1,
             var name: String? = null,
             var colorTransform: ColorTransform = ColorTransform(),
-            var ratio: Double = 0.0,
+            var ratio: Ratio = Ratio.ZERO,
             var matrix: MMatrix = MMatrix(),
             var blendMode: BlendMode = BlendMode.INHERIT,
             var filterList: List<IFilter> = emptyList(),
 		) {
 			fun reset() {
 				uid = -1
-				ratio = 0.0
+				ratio = Ratio.ZERO
 				charId = -1
 				clipDepth = -1
 				colorTransform.setToIdentity()
@@ -963,7 +964,7 @@ class SwfLoaderMethod(val context: AnLibrary.Context, val config: SWFExportConfi
 					}
 
 					if (it.hasRatio) {
-						depth.ratio = it.ratiod
+						depth.ratio = it.ratiod.toRatio()
 						val ratios = morphShapeRatios.getOrPut(depth.charId) { hashSetOf() }
 						ratios += it.ratiod
 					}

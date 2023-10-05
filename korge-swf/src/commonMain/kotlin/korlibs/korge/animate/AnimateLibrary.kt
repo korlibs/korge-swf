@@ -105,7 +105,7 @@ data class AnSymbolTimelineFrame(
 	var depth: Int = -1,
 	var uid: Int = -1,
 	var clipDepth: Int = -1,
-	var ratio: Double = 0.0,
+	var ratio: Ratio = Ratio.ZERO,
 	var transform: MMatrix = MMatrix(),
 	var name: String? = null,
 	var colorTransform: ColorTransform = ColorTransform(),
@@ -125,7 +125,9 @@ data class AnSymbolTimelineFrame(
 		fun setToViewInterpolated(view: View, l: AnSymbolTimelineFrame, r: AnSymbolTimelineFrame, ratio: Ratio) {
 			view.setMatrixInterpolated(ratio.toDouble(), l.transform.immutable, r.transform.immutable)
 			view.colorTransform = view.colorTransform.setToInterpolated(ratio, l.colorTransform, r.colorTransform)
-			view.ratio = ratio.interpolate(l.ratio, r.ratio)
+            if (view is AnMorphShape) {
+                view.ratio = ratio.interpolate(l.ratio, r.ratio)
+            }
 			view.name = l.name
 			view.blendMode = l.blendMode
             view.filter = l.filter
@@ -133,7 +135,9 @@ data class AnSymbolTimelineFrame(
 	}
 
 	fun setToView(view: View) {
-		view.ratio = ratio
+        if (view is AnMorphShape) {
+            view.ratio = ratio
+        }
 		view.setMatrix(transform.immutable)
 		view.name = name
 		view.colorTransform = colorTransform

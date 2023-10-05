@@ -218,7 +218,7 @@ class AnMorphShape(library: AnLibrary, val morphSymbol: AnSymbolMorphShape) : An
             shape = morphSymbol.shapeGen!!.invoke(ratio.toDouble())
             return
         }
-		val result = morphSymbol.texturesWithBitmap.find(ratio.seconds, timedResult)
+		val result = morphSymbol.texturesWithBitmap.find(ratio.toDouble().seconds, timedResult)
 		texWBS = result.left ?: result.right
 
 		dx = texWBS?.bounds?.x?.toFloat() ?: 0f
@@ -230,7 +230,7 @@ class AnMorphShape(library: AnLibrary, val morphSymbol: AnSymbolMorphShape) : An
 		smoothing = true
 	}
 
-	override var ratio: Double = 0.0
+	var ratio: Ratio = Ratio.ZERO
 		set(value) {
 			field = value
 			updatedRatio()
@@ -339,10 +339,10 @@ class TimelineRunner(val view: AnMovieClip, val symbol: AnSymbolMovieClip) {
 	fun gotoAndPlay(name: String, time: TimeSpan = 0.milliseconds) = gotoAndRunning(true, name, time)
 	fun gotoAndStop(name: String, time: TimeSpan = 0.milliseconds) = gotoAndRunning(false, name, time)
 
-    var ratio: Double
-        get() = (currentTime / currentStateTotalTime)
+    var ratio: Ratio
+        get() = Ratio(currentTime / currentStateTotalTime)
         set(value) {
-            currentTime = (currentStateTotalTime * value.clamp01())
+            currentTime = (currentStateTotalTime * value.toDouble().clamp01())
         }
 
 	fun update(time: TimeSpan) {
@@ -669,7 +669,7 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
    //    super.buildDebugComponent(views, container)
    //}
 
-    override var ratio: Double
+    var ratio: Ratio
         get() = timelineRunner.ratio
         set(value) {
             //println("set ratio: $value")

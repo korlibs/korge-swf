@@ -33,6 +33,7 @@ import korlibs.io.stream.writeStringz
 import korlibs.io.stream.writeU_VL
 import korlibs.math.*
 import korlibs.math.geom.*
+import korlibs.math.interpolation.*
 import korlibs.time.*
 
 suspend fun AnLibrary.writeTo(file: VfsFile, config: AnLibrarySerializer.Config = AnLibrarySerializer.Config()) {
@@ -280,7 +281,7 @@ object AnLibrarySerializer {
 							var lastColorTransform: ColorTransform = ColorTransform()
 							var lastMatrix: MMatrix = MMatrix()
 							var lastClipDepth = -1
-							var lastRatio = 0.0
+							var lastRatio = Ratio.ZERO
 							var lastBlendMode = BlendMode.INHERIT
 							writeU_VL(frames.size)
 							var lastFrameTime = 0
@@ -389,7 +390,7 @@ object AnLibrarySerializer {
 									if (hasMatrixTX) writeS_VL((m.tx * 20).toInt())
 									if (hasMatrixTY) writeS_VL((m.ty * 20).toInt())
 								}
-								if (hasRatio) write8((frame.ratio * 255).toInt().clamp(0, 255))
+								if (hasRatio) write8((frame.ratio.toDouble() * 255).toInt().clamp(0, 255))
 
 								if (hasBlendMode) {
 									write8(frame.blendMode.ordinal)
