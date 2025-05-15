@@ -1,6 +1,7 @@
 package korlibs.korge.animate
 
 import korlibs.datastructure.*
+import korlibs.datastructure.closeable.*
 import korlibs.datastructure.iterators.fastForEach
 import korlibs.graphics.shader.*
 import korlibs.korge.view.property.*
@@ -694,7 +695,7 @@ class AnMovieClip(override val library: AnLibrary, override val symbol: AnSymbol
 	private suspend fun _waitEvent(eventsSet: Set<String>, afterSignals: () -> Unit = {}): String? {
 		val once = Once()
 		val deferred = CompletableDeferred<String?>(Job())
-		val closeables = arrayListOf<Closeable>()
+		val closeables = arrayListOf<AutoCloseable>()
 		//println("Listening($onEvent) : $eventsSet")
 		closeables += onStop {
 			//println("onStop")
